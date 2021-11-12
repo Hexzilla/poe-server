@@ -4,21 +4,21 @@ const validator = require('express-validator')
 const getErrorMessage = function(err) {
   console.log('err.name=', err.name, err.code)
   if (err.name === 'MongoServerError') {
-    if (err.code === 11000) { //Duplicated
+    if (err.code === 11000) { //duplicated
       return {
         code: err.code,
+        message: err.name,
         errors: Object.keys(err.keyValue).reduce(function(errors, key) {
           errors[key] = 'is duplicated';
           return errors;
         }, {})
       }
     }
-    return err
   }
   else if (err.name === 'ValidationError') {
     return {
-      code: err.code,
-      errmsg: err.name,
+      code: 400015,
+      message: err.name,
       errors: Object.keys(err.errors).reduce(function(errors, key) {
         errors[key] = err.errors[key].message;
         return errors;
@@ -26,11 +26,7 @@ const getErrorMessage = function(err) {
     }
   }
 
-  //Unknown error
-  return {
-    code: -1,
-    errmsg: err.message
-  }
+  return err
 }
 
 module.exports = {
@@ -38,10 +34,9 @@ module.exports = {
     const errors = validator.validationResult(req)
     if (!errors.isEmpty()) {
       return res.status(422).json({
-        success: false,
-        data: {
-          code: 10000022,
-          errmsg: "ValidationError",
+        errors: {
+          code: 400022,
+          message: "RequestValidationError",
           errors: errors.array().reduce(function(errors, it) {
             errors[it.param] = it.msg;
             return errors;
@@ -63,8 +58,7 @@ module.exports = {
       catch (e) {
         console.error(e)
         return res.status(501).json({
-          success: false,
-          data: getErrorMessage(e),
+          errors: getErrorMessage(e),
         })
       }
     }

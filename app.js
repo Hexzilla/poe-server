@@ -58,7 +58,7 @@ if (!isProduction) {
 
     res.status(err.status || 500);
 
-    res.json({'errors': {
+    res.json({errors: {
       message: err.message,
       error: err
     }});
@@ -69,7 +69,7 @@ if (!isProduction) {
 // no stacktraces leaked to user
 app.use(function(err, req, res, next) {
   res.status(err.status || 500);
-  res.json({'errors': {
+  res.json({errors: {
     message: err.message,
     error: {}
   }});

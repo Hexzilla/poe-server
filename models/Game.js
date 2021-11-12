@@ -2,11 +2,11 @@ const mongoose = require('mongoose');
 
 const GameSchema = new mongoose.Schema(
   {
-    name: {
+    code: {
       type: String,
       lowercase: true,
       required: [true, "can't be blank"],
-      match: [/^[a-zA-Z0-9]+$/, "is invalid"],
+      match: [/^[a-zA-Z0-9_]+$/, "is invalid"],
       index: true,
       unique: true,
     },
@@ -17,5 +17,12 @@ const GameSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+GameSchema.methods.toJSON = function(){
+  return {
+    code: this.code,
+    title: this.title,
+  };
+};
 
 mongoose.model('Game', GameSchema);
