@@ -13,4 +13,9 @@ module.exports = {
     return { games }
   },
 
+  deleteGame: async function(game) {
+    return {
+      game: await game.delete()
+    }
+  }
 };

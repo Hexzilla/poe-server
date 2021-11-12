@@ -39,7 +39,7 @@ router.get('/',
 );
 
 /**
- * Get a game.
+ * Find a game by code
  */
 router.get('/:code',
   auth.required, 
@@ -48,5 +48,14 @@ router.get('/:code',
   })
 );
 
+/**
+ * Delete a game by code
+ */
+router.delete('/:code',
+  auth.required, 
+  helper.createRouter(async function({ game }) {
+    return await gameSvc.deleteGame(game);
+  })
+);
 
 module.exports = router;
