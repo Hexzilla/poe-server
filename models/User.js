@@ -1,9 +1,9 @@
-var mongoose = require('mongoose');
-var crypto = require('crypto');
-var jwt = require('jsonwebtoken');
-var secret = require('../config').secret;
+const mongoose = require('mongoose');
+const crypto = require('crypto');
+const jwt = require('jsonwebtoken');
+const secret = require('../config').secret;
 
-var UserSchema = new mongoose.Schema(
+const UserSchema = new mongoose.Schema(
   {
     username: {
       type: String,
@@ -32,7 +32,7 @@ var UserSchema = new mongoose.Schema(
 );
 
 UserSchema.methods.validPassword = function(password) {
-  var hash = crypto.pbkdf2Sync(password, this.salt, 10000, 512, 'sha512').toString('hex');
+  const hash = crypto.pbkdf2Sync(password, this.salt, 10000, 512, 'sha512').toString('hex');
   return this.hash === hash;
 };
 
@@ -42,8 +42,8 @@ UserSchema.methods.setPassword = function(password){
 };
 
 UserSchema.methods.generateJWT = function() {
-  var today = new Date();
-  var exp = new Date(today);
+  const today = new Date();
+  const exp = new Date(today);
   exp.setDate(today.getDate() + 60);
 
   return jwt.sign({
