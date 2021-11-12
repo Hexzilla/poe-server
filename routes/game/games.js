@@ -15,9 +15,7 @@ router.param('code', function(req, res, next, code) {
     }).catch(next);
 });
 
-/**
- * Create a new game.
- */
+// Create a new game.
 router.post('/',
   auth.required, 
   v.body('code').isString(),
@@ -28,9 +26,7 @@ router.post('/',
   })
 );
 
-/**
- * Get a list of games.
- */
+// Get a list of games.
 router.get('/',
   auth.required, 
   helper.createRouter(async function() {
@@ -38,9 +34,7 @@ router.get('/',
   })
 );
 
-/**
- * Find a game by code
- */
+// Find a game by code
 router.get('/:code',
   auth.required, 
   helper.createRouter(async function({ game }) {
@@ -48,9 +42,7 @@ router.get('/:code',
   })
 );
 
-/**
- * Delete a game by code
- */
+//Delete a game by code
 router.delete('/:code',
   auth.required, 
   helper.createRouter(async function({ game }) {
