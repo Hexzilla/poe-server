@@ -37,10 +37,7 @@ if (isProduction){
   mongoose.set('debug', true);
 }
 
-require('./models/User');
-require('./models/Article');
-require('./models/Comment');
-require('./config/passport');
+require('./models');
 
 app.use(require('./routes'));
 
