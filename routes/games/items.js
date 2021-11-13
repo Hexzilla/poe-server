@@ -4,15 +4,41 @@ const router = require('express').Router();
 const Item = mongoose.model('Item');
 const auth = require('../auth');
 const helper = require('../helper');
-const gameSvc = require('../../services/game.service');
+const itemSvc = require('../../services/item.service');
 
-// Preload game objects on routes with ':code'
+// Preload item objects on routes with ':itemId'
 router.param('itemId', function(req, res, next, itemId) {
-  Item.findOne({ itemId }).then(function(item) {
+  Item.findById(itemId).then(function(item) {
       if (!item) { return res.sendStatus(404); }
       req.item = item;
       return next();
     }).catch(next);
 });
+
+// Get items.
+router.get('/',
+  auth.required,
+  helper.createRouter(async function({ game }) {
+    return await itemSvc.getItems(game);
+  })
+);
+
+// Create a new item.
+router.post('/',
+  auth.required,
+  v.body('name').notEmpty(),
+  helper.validate,
+  helper.createRouter(async function({ game, body }) {
+    return await itemSvc.createItem(game, body);
+  })
+);
+
+// Delete a item
+router.delete('/:itemId',
+  auth.required, 
+  helper.createRouter(async function({ item }) {
+    return await itemSvc.deleteItem(item);
+  })
+);
 
 module.exports = router;

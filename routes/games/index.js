@@ -60,16 +60,7 @@ router.delete('/:code',
   })
 );
 
-// Create a new item.
-router.post('/:code/items',
-  auth.required,
-  v.body('name').notEmpty(),
-  helper.validate,
-  helper.createRouter(async function({ payload, game, body }) {
-    return await gameSvc.createItem(payload.id, game, body);
-  })
-);
-
-router.use('/items', require('./items'))
+router.use('/:code/items', require('./items'))
+router.use('/:code/sales', require('./sales'))
 
 module.exports = router;

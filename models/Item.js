@@ -6,18 +6,22 @@ const ItemSchema = new mongoose.Schema(
       type: String,
       required: [true, "can't be blank"],
     },
-    gameId: {
+    game: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Game'
-    },
-    userId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'User'
     },
     options: {
     }
   },
   { timestamps: true }
 );
+
+ItemSchema.methods.toJSON = function(){
+  return {
+    id: this._id,
+    name: this.name,
+    options: this.options
+  };
+};
 
 mongoose.model('Item', ItemSchema);

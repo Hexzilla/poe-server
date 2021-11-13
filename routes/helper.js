@@ -2,8 +2,15 @@ const validator = require('express-validator')
 
 
 const getErrorMessage = function(err) {
-  console.log('err.name=', err.name, err.code)
-  if (err.name === 'MongoServerError') {
+  console.log('***********************', err.name, err.code, err.message, "*************************")
+  if (err.name === 'ReferenceError') {
+    return {
+      code: 400011,
+      message: err.name,
+      errors: err.message
+    }
+  }
+  else if (err.name === 'MongoServerError') {
     if (err.code === 11000) { //duplicated
       return {
         code: err.code,

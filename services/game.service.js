@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const Game = mongoose.model('Game');
-const Item = mongoose.model('Item');
 
 module.exports = {
   createGame: async function(code, title) {
@@ -23,17 +22,7 @@ module.exports = {
 
   deleteGame: async function(game) {
     return {
-      game: await game.delete()
+      game: await game.remove()
     }
-  },
-
-  createItem: async function(userId, game, data) {
-    const item = new Item({
-      userId,
-      gameId: game.id,
-      ...data
-    });
-    const saved = await item.save();
-    return { item: item.id };
   },
 };
