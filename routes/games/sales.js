@@ -17,6 +17,14 @@ router.param('saleId', function(req, res, next, saleId) {
 });
 
 // Get sale items.
+router.get('/:saleId',
+  auth.required,
+  helper.createRouter(async function({ sale }) {
+    return { item: sale }
+  })
+);
+
+// Get sale items.
 router.get('/',
   auth.required,
   helper.createRouter(async function({ payload }) {

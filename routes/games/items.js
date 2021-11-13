@@ -15,6 +15,14 @@ router.param('itemId', function(req, res, next, itemId) {
     }).catch(next);
 });
 
+// Get item.
+router.get('/:itemId',
+  auth.required,
+  helper.createRouter(async function({ item }) {
+    return { item }
+  })
+);
+
 // Get items.
 router.get('/',
   auth.required,
