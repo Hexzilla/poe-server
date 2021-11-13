@@ -57,7 +57,7 @@ module.exports = {
       } 
       catch (e) {
         console.error(e)
-        return res.status(501).json({
+        return res.status(422).json({
           errors: getErrorMessage(e),
         })
       }

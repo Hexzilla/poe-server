@@ -42,12 +42,34 @@ router.get('/:code',
   })
 );
 
-//Delete a game by code
+// Updade a game information.
+router.put('/:code',
+  auth.required,
+  v.body('code').isString(),
+  v.body('title').isString(),
+  helper.createRouter(async function({ game, body }) {
+    return await gameSvc.updateGame(game, body.code, body.title);
+  })
+);
+
+// Delete a game by code
 router.delete('/:code',
   auth.required, 
   helper.createRouter(async function({ game }) {
     return await gameSvc.deleteGame(game);
   })
 );
+
+// Create a new item.
+router.post('/:code/items',
+  auth.required,
+  v.body('name').notEmpty(),
+  helper.validate,
+  helper.createRouter(async function({ payload, game, body }) {
+    return await gameSvc.createItem(payload.id, game, body);
+  })
+);
+
+router.use('/items', require('./items'))
 
 module.exports = router;
